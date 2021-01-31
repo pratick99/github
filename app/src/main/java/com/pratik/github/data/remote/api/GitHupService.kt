@@ -1,5 +1,8 @@
 package com.pratik.github.data.remote.api
 
+import com.pratik.github.data.remote.dto.Root
+import com.pratik.github.util.ResultsResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -16,6 +19,6 @@ interface GitHupService {
         @Path("repo") repo : String,
         @Query("page") page: Int,
         @Query("per_page") pageSize : Int
-    )
+    ) : Response<ResultsResponse<Root>>
 
 }
