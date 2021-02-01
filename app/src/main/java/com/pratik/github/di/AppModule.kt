@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [ViewModelModule::class, CoreDataModule::class])
 class AppModule {
 
     @Singleton
@@ -18,7 +18,7 @@ class AppModule {
     fun getGitHubService(okHttpClient: OkHttpClient, converterFactory: GsonConverterFactory) = provideService(okHttpClient, converterFactory, GitHupService::class.java)
 
 
-
+    @CoroutineScopeIO
     @Provides
     fun provideCoroutineScopeIO() = CoroutineScope(Dispatchers.IO)
 
