@@ -28,5 +28,5 @@ class CoreDataModule {
 
     @Provides
     @Singleton
-    fun provideGsonFactory(gson: Gson) = GsonConverterFactory.create(gson)
+    fun provideGsonFactory(gson: Gson): GsonConverterFactory = GsonConverterFactory.create(gson)
 }
