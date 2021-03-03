@@ -31,6 +31,7 @@ class GitHubCommitsPageDataSource @Inject constructor(
                 val results = response.data
                 results?.let { callback(it) }
             } else if (response.status == Status.ERROR) {
+                callback(emptyList())
                 postError(response.message)
             }
         }

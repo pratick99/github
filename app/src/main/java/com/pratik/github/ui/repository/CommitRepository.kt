@@ -3,9 +3,9 @@ package com.pratik.github.ui.repository
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.pratik.github.data.remote.datasource.GitHubCommitsPageDataSourceFactory
 import com.pratik.github.data.remote.datasource.GitHubRemoteDataSource
 import com.pratik.github.data.remote.dto.Root
-import com.pratik.github.data.remote.datasource.GitHubCommitsPageDataSourceFactory
 import com.pratik.github.di.OpenForTesting
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
@@ -17,6 +17,9 @@ class CommitRepository @Inject constructor(private val remoteDataSource: GitHubR
 
     fun observeRemotePagedSets(scope: CoroutineScope): LiveData<PagedList<Root>> {
         val dataSourceFactory = GitHubCommitsPageDataSourceFactory(remoteDataSource, scope)
-        return LivePagedListBuilder(dataSourceFactory, GitHubCommitsPageDataSourceFactory.pagedListConfig()).build()
+        return LivePagedListBuilder(
+            dataSourceFactory,
+            GitHubCommitsPageDataSourceFactory.pagedListConfig()
+        ).build()
     }
 }

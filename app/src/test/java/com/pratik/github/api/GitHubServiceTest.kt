@@ -2,6 +2,7 @@ package com.pratik.github.api
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.pratik.github.data.remote.api.GitHupService
+import com.pratik.github.data.remote.dto.Root
 import junit.framework.Assert.assertNotNull
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
@@ -45,7 +46,7 @@ class GitHubServiceTest {
     @Test
     fun requestGitHubCommits() {
         runBlocking {
-            enqueueResponse("commits.json")
+            enqueueResponse(emptyList())
             val resultResponse = service.getCommits("palantir", "blueprint", 1, 2).body()
             val request = mockWebServer.takeRequest()
             assertNotNull(resultResponse)
@@ -54,17 +55,14 @@ class GitHubServiceTest {
     }
 
 
-    private fun enqueueResponse(fileName: String, headers: Map<String, String> = emptyMap()) {
-        val inputStream = javaClass.classLoader
-            .getResourceAsStream("api-response/$fileName")
-        val source = Okio.buffer(Okio.source(inputStream))
+    private fun enqueueResponse(data: List<Root>, headers: Map<String, String> = emptyMap()) {
         val mockResponse = MockResponse()
         for ((key, value) in headers) {
             mockResponse.addHeader(key, value)
         }
         mockWebServer.enqueue(
             mockResponse.setBody(
-                source.readString(Charsets.UTF_8)
+                data.toString()
             )
         )
     }
