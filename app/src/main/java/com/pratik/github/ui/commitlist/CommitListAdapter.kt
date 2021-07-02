@@ -1,15 +1,15 @@
-package com.pratik.github.ui.commits
+package com.pratik.github.ui.commitlist
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pratik.github.data.remote.dto.Root
 import com.pratik.github.databinding.CommitListItemBinding
 
-class CommitListAdapter :
+class CommitListAdapter(private val itemClickListener: OnItemClickListener) :
     PagedListAdapter<Root, CommitListAdapter.ViewHolder>(CommitSettDiffCallback()) {
 
     private lateinit var recyclerView: RecyclerView
@@ -22,7 +22,7 @@ class CommitListAdapter :
         val root = getItem(position)
         root?.let {
             holder.apply {
-                bindView(root)
+                bindView(root, itemClickListener)
             }
         }
     }
@@ -35,13 +35,19 @@ class CommitListAdapter :
     }
 
     class ViewHolder(private val binding: CommitListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindView(root: Root) {
-            binding.commitAuthorName.text = root.commit.author.name
+        fun bindView(root: Root, clickListener: OnItemClickListener) {
+            binding.commitAuthorName.text = root.commit?.author?.name
             binding.commitHash.text = root.sha
-            binding.commitMessage.text = root.commit.message
+            binding.commitMessage.text = root.commit?.message
+            itemView.setOnClickListener {
+                clickListener.onItemClicked(root = root)
+            }
         }
     }
+}
 
+interface OnItemClickListener{
+    fun onItemClicked(root: Root)
 }
 
 private class CommitSettDiffCallback : DiffUtil.ItemCallback<Root>() {

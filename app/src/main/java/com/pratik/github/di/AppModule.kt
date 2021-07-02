@@ -1,6 +1,6 @@
 package com.pratik.github.di
 
-import com.pratik.github.data.remote.api.GitHupService
+import com.pratik.github.data.remote.api.GitHubService
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineScope
@@ -15,19 +15,19 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun getGitHubService(okHttpClient: OkHttpClient, converterFactory: GsonConverterFactory) = provideService(okHttpClient, converterFactory, GitHupService::class.java)
+    fun getGitHubService(okHttpClient: OkHttpClient, converterFactory: GsonConverterFactory) = provideService(okHttpClient, converterFactory, GitHubService::class.java)
 
 
     @CoroutineScopeIO
     @Provides
-    fun provideCoroutineScopeIO() = CoroutineScope(Dispatchers.IO)
+    fun provideCoroutineScopeIO()  =  CoroutineScope(Dispatchers.IO)
 
     private fun createRetrofit(
         okHttpClient: OkHttpClient,
         converterFactory: GsonConverterFactory
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(GitHupService.END_POINT)
+            .baseUrl(GitHubService.END_POINT)
             .client(okHttpClient)
             .addConverterFactory(converterFactory)
             .build()

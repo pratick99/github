@@ -2,6 +2,9 @@ package com.pratik.github.util
 
 import android.util.Log
 import retrofit2.Response
+import java.io.IOException
+import java.lang.Exception
+import java.net.UnknownHostException
 
 /**
  * Abstract Base Data source class with error handling

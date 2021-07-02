@@ -10,7 +10,7 @@ data class Root(
     val node_id: String,
 
     @SerializedName("commit")
-    val commit: Commit,
+    val commit: Commit ?=null,
 
     @SerializedName("url")
     val url: String,
@@ -22,11 +22,11 @@ data class Root(
     val comments_url: String,
 
     @SerializedName("author")
-    val author: Author,
+    val author: Author?=null,
 
     @SerializedName("committer")
-    val committer: Committer,
+    val committer: Committer?=null,
 
     @SerializedName("parents")
-    val parents: List<Parent>
+    val parents: List<Parent> ?= emptyList()
 )

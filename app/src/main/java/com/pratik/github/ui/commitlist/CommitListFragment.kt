@@ -1,26 +1,28 @@
-package com.pratik.github.ui.commits
+package com.pratik.github.ui.commitlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.pratik.github.MainActivity
+import com.pratik.github.data.remote.dto.Root
 import com.pratik.github.databinding.CommitListFragmentBinding
-import com.pratik.github.di.Injectable
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class CommitListFragment : Fragment(), Injectable {
+class CommitListFragment : DaggerFragment(), OnItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var binding: CommitListFragmentBinding
     private lateinit var recyclerView: RecyclerView
-    private val commitListAdapter: CommitListAdapter by lazy { CommitListAdapter() }
+    private val commitListAdapter: CommitListAdapter by lazy { CommitListAdapter(this) }
     private lateinit var viewModel: CommitListViewModel
     private lateinit var linearLayoutManager: LinearLayoutManager
 
@@ -47,6 +49,10 @@ class CommitListFragment : Fragment(), Injectable {
 
     companion object {
         fun newInstance() = CommitListFragment()
+    }
+
+    override fun onItemClicked(root: Root) {
+       (activity as MainActivity).navigateToCommitDetailsFragment(root.sha)
     }
 
 }

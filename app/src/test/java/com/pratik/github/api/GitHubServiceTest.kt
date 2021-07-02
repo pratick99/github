@@ -1,13 +1,12 @@
 package com.pratik.github.api
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.pratik.github.data.remote.api.GitHupService
+import com.pratik.github.data.remote.api.GitHubService
 import com.pratik.github.data.remote.dto.Root
 import junit.framework.Assert.assertNotNull
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import okio.Okio
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -24,7 +23,7 @@ class GitHubServiceTest {
     @JvmField
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var service: GitHupService
+    private lateinit var service: GitHubService
 
     private lateinit var mockWebServer: MockWebServer
 
@@ -35,7 +34,7 @@ class GitHubServiceTest {
             .baseUrl(mockWebServer.url(""))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(GitHupService::class.java)
+            .create(GitHubService::class.java)
     }
 
     @After

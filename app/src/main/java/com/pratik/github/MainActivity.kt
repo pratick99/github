@@ -1,21 +1,13 @@
 package com.pratik.github
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.pratik.github.databinding.ActivityMainBinding
-import com.pratik.github.di.AppInjector
-import com.pratik.github.ui.commits.CommitListFragment
-import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
-import javax.inject.Inject
+import com.pratik.github.ui.commitDetails.CommitDetailFragment
+import com.pratik.github.ui.commitlist.CommitListFragment
+import dagger.android.support.DaggerAppCompatActivity
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
+class MainActivity : DaggerAppCompatActivity() {
 
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,10 +18,17 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun onResume() {
         super.onResume()
         val commitListFragment = CommitListFragment.newInstance()
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container_view, commitListFragment)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container_view, commitListFragment)
             .addToBackStack(null)
             .commit()
     }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
+    fun navigateToCommitDetailsFragment(sha: String) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container_view, CommitDetailFragment.newInstance(sha))
+            .addToBackStack(null)
+            .commit()
+    }
+
 }

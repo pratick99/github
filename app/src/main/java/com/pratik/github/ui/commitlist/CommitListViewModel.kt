@@ -1,8 +1,8 @@
-package com.pratik.github.ui.commits
+package com.pratik.github.ui.commitlist
 
 import androidx.lifecycle.ViewModel
 import com.pratik.github.di.CoroutineScopeIO
-import com.pratik.github.ui.repository.CommitRepository
+import com.pratik.github.repository.CommitRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import javax.inject.Inject

@@ -13,10 +13,12 @@ import javax.inject.Singleton
 class CoreDataModule {
 
     @Provides
+    @Singleton
     fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient =
         OkHttpClient.Builder().addInterceptor(interceptor).build()
 
     @Provides
+    @Singleton
     fun provideLoggingInterceptor() = HttpLoggingInterceptor().apply {
         level =
             if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE

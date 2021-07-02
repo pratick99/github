@@ -3,6 +3,7 @@ package com.pratik.github.data.remote.datasource
 import android.util.Log
 import androidx.paging.PageKeyedDataSource
 import com.pratik.github.data.remote.dto.Root
+import com.pratik.github.util.Result
 import com.pratik.github.util.Result.Status
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +27,7 @@ class GitHubCommitsPageDataSource @Inject constructor(
 
     private fun fetchData(page: Int, pageSize: Int, callback: (List<Root>) -> Unit) {
         scope.launch(getJobErrorHandler()) {
-            val response = dataSource.fetchCommits(page, pageSize)
+            val response : Result<List<Root>> = dataSource.fetchCommits(page, pageSize)
             if (response.status == Status.SUCCESS) {
                 val results = response.data
                 results?.let { callback(it) }
