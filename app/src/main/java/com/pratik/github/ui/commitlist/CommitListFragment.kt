@@ -2,7 +2,6 @@ package com.pratik.github.ui.commitlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
@@ -27,7 +26,8 @@ class CommitListFragment : DaggerFragment(), OnItemClickListener {
     private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = CommitListFragmentBinding.inflate(inflater, container, false)
@@ -42,9 +42,12 @@ class CommitListFragment : DaggerFragment(), OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory).get(CommitListViewModel::class.java)
-        viewModel.commitList.observe(viewLifecycleOwner, Observer {
-            commitListAdapter.submitList(it)
-        })
+        viewModel.commitList.observe(
+            viewLifecycleOwner,
+            Observer {
+                commitListAdapter.submitList(it)
+            }
+        )
     }
 
     companion object {
@@ -52,7 +55,6 @@ class CommitListFragment : DaggerFragment(), OnItemClickListener {
     }
 
     override fun onItemClicked(root: Root) {
-       (activity as MainActivity).navigateToCommitDetailsFragment(root.sha)
+        (activity as MainActivity).navigateToCommitDetailsFragment(root.sha)
     }
-
 }

@@ -2,7 +2,6 @@ package com.pratik.github.ui.commitlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -27,8 +26,6 @@ class CommitListAdapter(private val itemClickListener: OnItemClickListener) :
         }
     }
 
-
-
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         this.recyclerView = recyclerView
@@ -46,7 +43,7 @@ class CommitListAdapter(private val itemClickListener: OnItemClickListener) :
     }
 }
 
-interface OnItemClickListener{
+interface OnItemClickListener {
     fun onItemClicked(root: Root)
 }
 

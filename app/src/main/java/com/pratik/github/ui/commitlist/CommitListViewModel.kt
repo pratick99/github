@@ -16,7 +16,6 @@ class CommitListViewModel @Inject constructor(
         repository.observeRemotePagedSets(scope)
     }
 
-
     override fun onCleared() {
         super.onCleared()
         scope.cancel()

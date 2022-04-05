@@ -1,12 +1,11 @@
 package com.pratik.github.ui.commitDetails
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.pratik.github.data.remote.dto.Root
 import com.pratik.github.databinding.FragmentCommitDetailBinding
@@ -27,8 +26,7 @@ class CommitDetailFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var binding: FragmentCommitDetailBinding
-    private lateinit var viewModel: CommitDetailViewModel
-
+    private var viewModel: CommitDetailViewModel ? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +36,8 @@ class CommitDetailFragment : DaggerFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCommitDetailBinding.inflate(inflater, container, false)
@@ -48,11 +47,10 @@ class CommitDetailFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory).get(CommitDetailViewModel::class.java)
-        viewModel.getCommitViewStateLiveData().observe(viewLifecycleOwner, {
+        viewModel?.getCommitViewStateLiveData()?.observe(viewLifecycleOwner, {
             when (it) {
                 is CommitViewState.Loading -> {
                     Toast.makeText(context, "Fetching Data...please wait", Toast.LENGTH_LONG).show()
-
                 }
                 is CommitViewState.Error -> {
                     Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
@@ -63,13 +61,13 @@ class CommitDetailFragment : DaggerFragment() {
                 }
             }
         })
-        viewModel.getCommitDetail(commitSha)
+        viewModel?.getCommitDetail(commitSha)
     }
 
     private fun assignDataToViews(data: Root) {
         binding.authorName.text = data.commit?.author?.name
         binding.authorEmail.text = data.commit?.author?.email
-        binding.commitMessageText.text= data.commit?.message
+        binding.commitMessageText.text = data.commit?.message
     }
 
     companion object {

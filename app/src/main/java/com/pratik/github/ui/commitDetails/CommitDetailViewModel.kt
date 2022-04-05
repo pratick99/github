@@ -3,7 +3,6 @@ package com.pratik.github.ui.commitDetails
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.pratik.github.di.CoroutineScopeIO
 import com.pratik.github.repository.CommitRepository
 import com.pratik.github.ui.util.CommitViewState
@@ -14,10 +13,10 @@ import javax.inject.Inject
 class CommitDetailViewModel @Inject constructor(
     private val commitRepository: CommitRepository,
     @CoroutineScopeIO private val scope: CoroutineScope
-) : ViewModel()  {
+) : ViewModel() {
 
     private val handler = CoroutineExceptionHandler { _, throwable ->
-        viewStateLiveData.postValue(CommitViewState.Error(message =  throwable.localizedMessage))
+        viewStateLiveData.postValue(CommitViewState.Error(message = throwable.localizedMessage))
     }
 
     private val viewStateLiveData = MutableLiveData<CommitViewState>()

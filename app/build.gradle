@@ -1,17 +1,16 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
 }
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion 31
+    buildToolsVersion '31.0.0'
 
     defaultConfig {
         applicationId "com.pratik.github"
-        minSdkVersion 25
-        targetSdkVersion 30
+        minSdkVersion 26
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -37,22 +36,21 @@ android {
 
 dependencies {
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // -- fragment
-    def fragmentVersion = "1.2.5"
+    def fragmentVersion = "1.4.1"
     implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
 
     // -- lifecycle
     def lifecycleVersion = "2.2.0"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
 
     // -- Testing
     def mockitoVersion = "2.25.0"
@@ -63,7 +61,7 @@ dependencies {
     def testRunnerVersion = '1.3.0'
     def testRulesVersion = "1.3.0"
     def mockwebserverVersion = "3.8.1"
-    def espressoVersion = '3.1.1'
+    def espressoVersion = '3.4.0'
     def testExtJunit = '1.1.0'
     testImplementation "junit:junit:$junitVersion"
     testImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserverVersion"
@@ -89,7 +87,7 @@ dependencies {
     androidTestImplementation "org.mockito:mockito-android:$mockitoAndroidVersion"
 
     // -- Pagination
-    def pagingVersion = '2.1.2'
+    def pagingVersion = '3.1.1'
     implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
 
     // -- Retrofit2
@@ -108,7 +106,7 @@ dependencies {
 
 
     // -- Lifecycle Components (ViewModel, LiveData and ReactiveStreams)
-    def lifecycle_version = "2.2.0"
+    def lifecycle_version = "2.4.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
@@ -132,6 +130,7 @@ dependencies {
     // Dagger2 core
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.3.0"
 
     // Dagger Android
     implementation "com.google.dagger:dagger-android:$dagger_version"

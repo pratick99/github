@@ -1,16 +1,13 @@
 package com.pratik.github.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.pratik.github.data.remote.datasource.GitHubCommitsPageDataSourceFactory
 import com.pratik.github.data.remote.datasource.GitHubRemoteDataSource
-import com.pratik.github.data.remote.dto.Commit
 import com.pratik.github.data.remote.dto.Root
 import com.pratik.github.di.OpenForTesting
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 

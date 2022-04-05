@@ -11,5 +11,4 @@ object AppInjector {
             .build()
             .inject(application)
     }
-
 }

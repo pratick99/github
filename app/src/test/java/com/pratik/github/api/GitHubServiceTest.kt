@@ -3,7 +3,7 @@ package com.pratik.github.api
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.pratik.github.data.remote.api.GitHubService
 import com.pratik.github.data.remote.dto.Root
-import junit.framework.Assert.assertNotNull
+import junit.framework.TestCase.assertNotNull
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -30,6 +30,7 @@ class GitHubServiceTest {
     @Before
     fun createService() {
         mockWebServer = MockWebServer()
+        mockWebServer.start()
         service = Retrofit.Builder()
             .baseUrl(mockWebServer.url(""))
             .addConverterFactory(GsonConverterFactory.create())
