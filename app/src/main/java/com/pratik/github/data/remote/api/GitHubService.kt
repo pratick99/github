@@ -1,6 +1,5 @@
 package com.pratik.github.data.remote.api
 
-import com.pratik.github.data.remote.dto.Commit
 import com.pratik.github.data.remote.dto.Root
 import retrofit2.Response
 import retrofit2.http.GET

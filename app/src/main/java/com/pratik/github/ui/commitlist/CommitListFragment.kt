@@ -4,50 +4,54 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pratik.github.MainActivity
 import com.pratik.github.data.remote.dto.Root
 import com.pratik.github.databinding.CommitListFragmentBinding
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-class CommitListFragment : DaggerFragment(), OnItemClickListener {
+@AndroidEntryPoint
+class CommitListFragment : Fragment(), OnItemClickListener {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var binding: CommitListFragmentBinding
-    private lateinit var recyclerView: RecyclerView
-    private val commitListAdapter: CommitListAdapter by lazy { CommitListAdapter(this) }
-    private lateinit var viewModel: CommitListViewModel
-    private lateinit var linearLayoutManager: LinearLayoutManager
+    private var _binding: CommitListFragmentBinding ?= null
+    private val binding: CommitListFragmentBinding
+        get() = _binding!!
+
+    private var commitListAdapter: CommitListAdapter ?= null
+
+    private val viewModel: CommitListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = CommitListFragmentBinding.inflate(inflater, container, false)
-        recyclerView = binding.commitListRecyclerview
-        linearLayoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = commitListAdapter
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
+        _binding = CommitListFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(CommitListViewModel::class.java)
-        viewModel.commitList.observe(
-            viewLifecycleOwner,
-            Observer {
-                commitListAdapter.submitList(it)
+        commitListAdapter = CommitListAdapter(this)
+        binding.commitListRecyclerview.adapter = commitListAdapter
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getCommits().collectLatest { commits ->
+                commitListAdapter?.submitData(commits)
             }
-        )
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        commitListAdapter = null
+        _binding = null
     }
 
     companion object {

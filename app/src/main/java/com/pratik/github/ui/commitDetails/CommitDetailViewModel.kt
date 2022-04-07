@@ -3,16 +3,18 @@ package com.pratik.github.ui.commitDetails
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.pratik.github.di.CoroutineScopeIO
+import androidx.lifecycle.viewModelScope
 import com.pratik.github.repository.CommitRepository
 import com.pratik.github.ui.util.CommitViewState
 import com.pratik.github.util.Result
-import kotlinx.coroutines.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class CommitDetailViewModel @Inject constructor(
     private val commitRepository: CommitRepository,
-    @CoroutineScopeIO private val scope: CoroutineScope
 ) : ViewModel() {
 
     private val handler = CoroutineExceptionHandler { _, throwable ->
@@ -25,22 +27,28 @@ class CommitDetailViewModel @Inject constructor(
 
     fun getCommitDetail(sha: String) {
         viewStateLiveData.postValue(CommitViewState.Loading)
-        scope.launch(handler) {
+        viewModelScope.launch(handler)  {
             val result = commitRepository.getCommit(commitSha = sha)
-            if (result.status == Result.Status.SUCCESS) {
-                result.data?.let {
-                    viewStateLiveData.postValue(CommitViewState.Success(result.data))
+//            if (result.status == Result.Status.SUCCESS) {
+//                result.data?.let {
+//                    viewStateLiveData.postValue(CommitViewState.Success(result.data))
+//                }
+//            } else if (result.status == Result.Status.ERROR) {
+//                result.message?.let {
+//                    viewStateLiveData.postValue(CommitViewState.Error(result.message))
+//                }
+//            }
+            if(result.isSuccessful) {
+                val commitDetail = result.body()
+                commitDetail?.let {
+                    viewStateLiveData.postValue(CommitViewState.Success(it))
                 }
-            } else if (result.status == Result.Status.ERROR) {
-                result.message?.let {
-                    viewStateLiveData.postValue(CommitViewState.Error(result.message))
+            } else {
+                val error = result.errorBody()
+                error?.let {
+                    viewStateLiveData.postValue(CommitViewState.Error(it.toString()))
                 }
             }
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        scope.cancel()
     }
 }

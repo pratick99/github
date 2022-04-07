@@ -2,14 +2,14 @@ package com.pratik.github.ui.commitlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pratik.github.data.remote.dto.Root
 import com.pratik.github.databinding.CommitListItemBinding
 
 class CommitListAdapter(private val itemClickListener: OnItemClickListener) :
-    PagedListAdapter<Root, CommitListAdapter.ViewHolder>(CommitSettDiffCallback()) {
+    PagingDataAdapter<Root, CommitListAdapter.ViewHolder>(CommitSettDiffCallback()) {
 
     private lateinit var recyclerView: RecyclerView
 

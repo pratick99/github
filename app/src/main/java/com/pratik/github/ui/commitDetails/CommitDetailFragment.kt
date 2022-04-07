@@ -6,12 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.pratik.github.data.remote.dto.Root
 import com.pratik.github.databinding.FragmentCommitDetailBinding
 import com.pratik.github.ui.util.CommitViewState
-import dagger.android.support.DaggerFragment
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 private const val COMMIT_SHA = "Commit_Sha"
 
@@ -20,13 +19,12 @@ private const val COMMIT_SHA = "Commit_Sha"
  * Use the [CommitDetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CommitDetailFragment : DaggerFragment() {
+@AndroidEntryPoint
+class CommitDetailFragment : Fragment() {
     private var commitSha: String = ""
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var binding: FragmentCommitDetailBinding
-    private var viewModel: CommitDetailViewModel ? = null
+    val viewModel: CommitDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +44,7 @@ class CommitDetailFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(CommitDetailViewModel::class.java)
-        viewModel?.getCommitViewStateLiveData()?.observe(viewLifecycleOwner, {
+        viewModel.getCommitViewStateLiveData().observe(viewLifecycleOwner) {
             when (it) {
                 is CommitViewState.Loading -> {
                     Toast.makeText(context, "Fetching Data...please wait", Toast.LENGTH_LONG).show()
@@ -60,8 +57,8 @@ class CommitDetailFragment : DaggerFragment() {
                     assignDataToViews(it.data)
                 }
             }
-        })
-        viewModel?.getCommitDetail(commitSha)
+        }
+        viewModel.getCommitDetail(commitSha)
     }
 
     private fun assignDataToViews(data: Root) {

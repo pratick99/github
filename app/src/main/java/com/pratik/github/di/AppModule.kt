@@ -1,40 +1,31 @@
 package com.pratik.github.di
 
 import com.pratik.github.data.remote.api.GitHubService
+import com.pratik.github.data.remote.datasource.GitHubRemoteDataSource
+import com.pratik.github.data.remote.datasource.GitHubRemoteDataSourceImpl
+import com.pratik.github.repository.CommitRepository
+import dagger.Binds
+import dagger.BindsInstance
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import okhttp3.OkHttpClient
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-@Module(includes = [ViewModelModule::class, CoreDataModule::class])
-class AppModule {
+@Module
+@InstallIn(SingletonComponent::class)
+object AppModule {
 
+    @Provides
     @Singleton
+    fun provideService(retrofit: Retrofit): GitHubService = retrofit.create(GitHubService::class.java)
+
+
     @Provides
-    fun getGitHubService(okHttpClient: OkHttpClient, converterFactory: GsonConverterFactory) = provideService(okHttpClient, converterFactory, GitHubService::class.java)
-
-
-    @CoroutineScopeIO
-    @Provides
-    fun provideCoroutineScopeIO()  =  CoroutineScope(Dispatchers.IO)
-
-    private fun createRetrofit(
-        okHttpClient: OkHttpClient,
-        converterFactory: GsonConverterFactory
-    ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(GitHubService.END_POINT)
-            .client(okHttpClient)
-            .addConverterFactory(converterFactory)
-            .build()
-    }
-
-    private fun <T> provideService(okhttpClient: OkHttpClient,
-                                   converterFactory: GsonConverterFactory, clazz: Class<T>): T {
-        return createRetrofit(okhttpClient, converterFactory).create(clazz)
+    @Singleton
+    fun provideCommitRepository(remoteDataSource: GitHubRemoteDataSource): CommitRepository {
+     return CommitRepository(remoteDataSource)
     }
 }

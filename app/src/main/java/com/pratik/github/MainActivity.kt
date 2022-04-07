@@ -1,13 +1,14 @@
 package com.pratik.github
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.pratik.github.databinding.ActivityMainBinding
 import com.pratik.github.ui.commitDetails.CommitDetailFragment
 import com.pratik.github.ui.commitlist.CommitListFragment
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : DaggerAppCompatActivity() {
-
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,5 +31,4 @@ class MainActivity : DaggerAppCompatActivity() {
             .addToBackStack(null)
             .commit()
     }
-
 }

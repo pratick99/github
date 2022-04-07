@@ -2,7 +2,7 @@ package com.pratik.github.api
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.pratik.github.data.remote.api.GitHubService
-import com.pratik.github.data.remote.datasource.GitHubRemoteDataSource
+import com.pratik.github.data.remote.datasource.GitHubRemoteDataSourceImpl
 import com.pratik.github.repository.CommitRepository
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.CoroutineScope
@@ -13,16 +13,14 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.Mock
 import org.mockito.Mockito.mock
-import org.mockito.junit.MockitoJUnit
 
 @RunWith(JUnit4::class)
 class GitHubCommitRepositoryTest {
 
     private lateinit var repository: CommitRepository
     private val service = mock(GitHubService::class.java)
-    private val remoteDataSource = GitHubRemoteDataSource(service)
+    private val remoteDataSource = GitHubRemoteDataSourceImpl(service)
 
     @Rule
     @JvmField
